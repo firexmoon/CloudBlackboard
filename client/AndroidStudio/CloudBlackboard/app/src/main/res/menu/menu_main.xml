@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.beautyli.app.cloudblackboard.MainActivity">
+    <item
+        android:id="@+id/action_disable_auto_logon"
+        android:orderInCategory="100"
+        android:title="关闭自动登录并退出"
+        app:showAsAction="never" />
+</menu>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_deleteNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:textSize="16dp"
+            android:text="删除"/>
+
+        <Button
+            android:id="@+id/button_uploadNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:layout_margin="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textSize="20dp"
+            android:text="上传"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editText_noteText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:layout_margin="16dp"
+        android:background="@null"
+        android:singleLine="false"
+        android:textSize="18dp"
+        android:hint="请输入要上传的信息"
+        android:layout_weight="1"
+        android:minLines="10"
+        android:inputType="textMultiLine"
+        android:gravity="top"/>
+
+</LinearLayout>
