@@ -18,6 +18,8 @@ namespace CloudBlackboard
         public string mServerIP = "beautyli.cn";
         public int mServerPort = 16821;
 
+        static readonly int mConnectTimeout = 10 * 1000;
+
         Socket mSocket;
 
         public bool Connect()
@@ -28,26 +30,53 @@ namespace CloudBlackboard
                 {
                     mSocket.Close();
                 }
-                
                 mSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
                 try
                 {
                     IPEndPoint end_point = new IPEndPoint(Dns.GetHostEntry(mServerIP).AddressList[0], mServerPort);
                     //IPEndPoint end_point = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1986);
-                    mSocket.Connect(end_point);
+
+                    IAsyncResult connResult = mSocket.BeginConnect(end_point, null, null);
+                    connResult.AsyncWaitHandle.WaitOne(mConnectTimeout, true);
+                    if (!connResult.IsCompleted)
+                    {
+                        mSocket.Close();
+                        return false;
+                    }
                 }
                 catch (Exception)
                 {
+                    mSocket.Close();
                     return false;
                 }
 
                 if (!mSocket.Connected)
                 {
+                    mSocket.Close();
                     return false;
                 }
 
+                mSocket.ReceiveTimeout = mConnectTimeout / 2;
                 return true;
+            }
+        }
+
+        int Receive(byte[] buf)
+        {
+            try
+            {
+                int r = mSocket.Receive(buf);
+                if (r <= 0)
+                {
+                    mSocket.Close();
+                }
+                return r;
+            }
+            catch (Exception)
+            {
+                mSocket.Close();
+                return -1;
             }
         }
 
@@ -61,7 +90,7 @@ namespace CloudBlackboard
                 }
 
                 byte[] rand_buffer = new byte[8];
-                if (mSocket.Receive(rand_buffer) < rand_buffer.Length)
+                if (Receive(rand_buffer) < rand_buffer.Length)
                 {
                     return false;
                 }
@@ -115,7 +144,7 @@ namespace CloudBlackboard
                 }
 
                 byte[] rand_buffer = new byte[8];
-                if (mSocket.Receive(rand_buffer) < rand_buffer.Length)
+                if (Receive(rand_buffer) < rand_buffer.Length)
                 {
                     return false;
                 }
@@ -303,7 +332,7 @@ namespace CloudBlackboard
                 }
 
                 byte[] pack_size_buffer = new byte[4];
-                if (mSocket.Receive(pack_size_buffer) < pack_size_buffer.Length)
+                if (Receive(pack_size_buffer) < pack_size_buffer.Length)
                 {
                     return null;
                 }
@@ -322,7 +351,7 @@ namespace CloudBlackboard
                 while (receive_len < pack_size)
                 {
                     byte[] receive_buffer = new byte[pack_size - receive_len];
-                    int temp_len = mSocket.Receive(receive_buffer);
+                    int temp_len = Receive(receive_buffer);
                     if (temp_len <= 0)
                     {
                         return null;

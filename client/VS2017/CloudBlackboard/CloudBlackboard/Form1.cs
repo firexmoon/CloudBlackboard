@@ -17,7 +17,7 @@ namespace CloudBlackboard
         static Form1 mInstance;
         public static MyClient mClient = new MyClient();
         static int mClientDBVersion = 0;
-        static int mRequestInterval = 8;
+        static int mRequestInterval = 10 * 1000;
         static Random mRandom = new Random();
         static Dictionary<string, bool> mDict_NotesChanged = new Dictionary<string, bool>();
         string mConfigPath = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
@@ -276,14 +276,14 @@ namespace CloudBlackboard
 
                 if (!mClient.Connect())
                 {
-                    Thread.Sleep(1000 * mRequestInterval);
+                    Thread.Sleep(mRequestInterval);
                     continue;
                 }
 
                 if(!mClient.Logon(mUser, mPINBase64))
                 {
                     mInstance.tabControl1.Invoke(mAsyncUIDelegate_Connection, new object[] { "登录失败" });
-                    Thread.Sleep(1000 * mRequestInterval);
+                    Thread.Sleep(mRequestInterval);
                     continue;
                 }
 
@@ -296,14 +296,14 @@ namespace CloudBlackboard
                     JObject respond = mClient.GetNewNotes(ref mClientDBVersion);
                     if (respond == null)
                     {
-                        Thread.Sleep(1000 * mRequestInterval);
+                        Thread.Sleep(mRequestInterval);
                         break;
                     }
 
                     mInstance.tabControl1.Invoke(mAsyncUIDelegate_GetNewNotes, new object[] { respond });
 
                     mInstance.tabControl1.Invoke(mAsyncUIDelegate_Connection, new object[] { "已连接" });
-                    Thread.Sleep(1000 * mRequestInterval);
+                    Thread.Sleep(mRequestInterval);
                 }
             }
         }
