@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity{
 
         String sIP = ip_port[0];
         String sPort = ip_port[1];
-        if(sIP.length() < 8 || sPort.length() < 2) {
+        if(sIP.length() < 6 || sPort.length() < 2) {
             showMsg("无效的服务器地址");
             return false;
         }
