@@ -1,0 +1,4 @@
+
+*.ide
+*.lock
+client/VS2017/CloudBlackboard/.vs/CloudBlackboard/v16/.suo

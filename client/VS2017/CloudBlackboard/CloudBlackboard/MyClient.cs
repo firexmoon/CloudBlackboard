@@ -34,8 +34,8 @@ namespace CloudBlackboard
 
                 try
                 {
-                    IPEndPoint end_point = new IPEndPoint(Dns.GetHostEntry(mServerIP).AddressList[0], mServerPort);
-                    //IPEndPoint end_point = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1986);
+                    //IPEndPoint end_point = new IPEndPoint(Dns.GetHostEntry(mServerIP).AddressList[0], mServerPort);
+                    IPEndPoint end_point = new IPEndPoint(IPAddress.Parse(mServerIP), mServerPort);
 
                     IAsyncResult connResult = mSocket.BeginConnect(end_point, null, null);
                     connResult.AsyncWaitHandle.WaitOne(mConnectTimeout, true);
