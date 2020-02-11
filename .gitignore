@@ -2,3 +2,6 @@
 *.ide
 *.lock
 client/VS2017/CloudBlackboard/.vs/CloudBlackboard/v16/.suo
+client/AndroidStudio/CloudBlackboard/app/build
+client/AndroidStudio/CloudBlackboard/.gradle
+client/AndroidStudio/CloudBlackboard/.idea
